@@ -1,0 +1,17 @@
+{
+  "name": "slack-irasutoya",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "node-inspector": "0.7.5",
+    "serverless-http": "^1.9.1",
+    "serverless-offline": "^4.9.1",
+    "xml2js": "^0.4.19"
+  }
+}
