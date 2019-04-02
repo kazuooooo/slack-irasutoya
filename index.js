@@ -5,15 +5,19 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const bodyParser = require("body-parser");
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({
+  extended: false
+});
 const responseBuilder = require("./responseBuilder");
 const service = require("./service");
 const _ = require("lodash");
 
-app.post("/", urlencodedParser, async function(req, res) {
-  res.end();
+app.post("/", urlencodedParser, async function (req, res) {
   let response;
-  const { text, response_url } = req.body;
+  const {
+    text,
+    response_url
+  } = req.body;
   try {
     if (text) {
       // search
@@ -27,13 +31,18 @@ app.post("/", urlencodedParser, async function(req, res) {
     // 500 INTERNAL SERVER ERROR
     axios.post(response_url, responseBuilder.internalServerError());
   }
+  res.end();
 });
 
-app.post("/action", urlencodedParser, async function(req, res) {
-  res.end();
+app.post("/action", urlencodedParser, async function (req, res) {
   let response;
-  const { response_url, actions } = JSON.parse(req.body.payload);
-  const { value: actionName } = actions[0];
+  const {
+    response_url,
+    actions
+  } = JSON.parse(req.body.payload);
+  const {
+    value: actionName
+  } = actions[0];
   try {
     if (actionName === "RETRY_RANDOM") {
       response = await _random();
@@ -44,7 +53,12 @@ app.post("/action", urlencodedParser, async function(req, res) {
   } catch (err) {
     axios.post(response_url, responseBuilder.internalServerError());
   }
+  res.end();
 });
+
+app.get("/install", function (req, res) {
+  return res.redirect(302, 'https://slack.com/oauth/authorize');
+})
 
 const _search = async text => {
   const images = await service.search(text);
