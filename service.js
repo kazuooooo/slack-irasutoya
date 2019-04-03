@@ -26,7 +26,14 @@ const search = async query => {
 
 const random = async () => {
   // pick random
-  const url = await _pickRandomEntryUrl();
+  const randomIndex = 1 + Math.floor(Math.random() * 1000);
+  const url = await _pickEntryUrl(randomIndex);
+  const image = await _scrapeImageObjectFromUrl(url);
+  return image;
+};
+
+const withIndex = async index => {
+  const url = await _pickEntryUrl(index);
   const image = await _scrapeImageObjectFromUrl(url);
   return image;
 };
@@ -59,8 +66,7 @@ _scrapeImageObjectFromUrl = async url => {
   }
 };
 
-const _pickRandomEntryUrl = async () => {
-  const startIndex = 1 + Math.floor(Math.random() * 1000);
+const _pickEntryUrl = async startIndex => {
   const requestPath = `https://www.irasutoya.com/feeds/posts/summary?start-index=${startIndex}&max-results=1`;
   const res = await axios.get(requestPath);
   const resObject = await _parseXmlResponse(res.data);
@@ -79,5 +85,6 @@ const _parseXmlResponse = xml => {
 
 module.exports = {
   search,
-  random
+  random,
+  withIndex
 };
