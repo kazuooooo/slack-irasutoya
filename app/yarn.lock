@@ -839,6 +839,11 @@ nth-check@~1.0.1:
   dependencies:
     boolbase "~1.0.0"
 
+nthline@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nthline/-/nthline-1.0.1.tgz#23c6d3a9fd479af387b633fb2832b5352a5a70ec"
+  integrity sha1-I8bTqf1HmvOHtjP7KDK1NSpacOw=
+
 on-finished@~2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.3.0.tgz#20f1336481b083cd75337992a16971aa2d906947"

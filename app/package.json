@@ -11,6 +11,7 @@
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "node-inspector": "0.7.5",
+    "nthline": "^1.0.1",
     "serverless-http": "^1.9.1",
     "serverless-offline": "^4.9.1",
     "xml2js": "^0.4.19"

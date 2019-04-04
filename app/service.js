@@ -1,13 +1,18 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const _ = require("lodash");
-const { parseString } = require("xml2js");
+const {
+  parseString
+} = require("xml2js");
+const nthline = require('nthline')
 
 const opts = {
   xmlMode: true,
   withDomLvl1: false,
   normalizeWhitespace: true
 };
+
+const MAX_IMAGE_INDEX = 9985
 
 // Irasutoya service
 const SEARCH_SMAPLE_SIZE = 3;
@@ -26,9 +31,8 @@ const search = async query => {
 
 const random = async () => {
   // pick random
-  const randomIndex = 1 + Math.floor(Math.random() * 1000);
-  const url = await _pickEntryUrl(randomIndex);
-  const image = await _scrapeImageObjectFromUrl(url);
+  const randomIndex = 1 + Math.floor(Math.random() * MAX_IMAGE_INDEX);
+  const image = await _readImageObjectFromListFile(randomIndex);
   return image;
 };
 
@@ -82,6 +86,15 @@ const _parseXmlResponse = xml => {
     });
   });
 };
+
+const _readImageObjectFromListFile = async index => {
+  const res = await nthline(index, './images.csv')
+  const [title, imageUrl] = res.split(',')
+  return {
+    title,
+    imageUrl
+  }
+}
 
 module.exports = {
   search,
