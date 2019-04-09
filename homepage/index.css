@@ -18,6 +18,14 @@ h1 {
     margin: 0 0 16px 0;
 }
 
+.terms {
+    display: inline-block;
+}
+
+.switch-lang {
+    margin-left: 16px;
+}
+
 .content {
     display: flex;
 }
