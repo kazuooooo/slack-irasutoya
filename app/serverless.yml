@@ -12,6 +12,8 @@ functions:
     events:
       - http: ANY /
       - http: "ANY {proxy+}"
-
+    environment:
+      CLIENT_ID: ${env:IRASUTOYA_CLIENT_ID}
+      CLIENT_SECRET: ${env:IRASUTOYA_CLIENT_SECRET}
 plugins:
   - serverless-offline

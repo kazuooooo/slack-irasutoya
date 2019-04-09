@@ -11,6 +11,8 @@ const urlencodedParser = bodyParser.urlencoded({
 const responseBuilder = require("./responseBuilder");
 const service = require("./service");
 const _ = require("lodash");
+const qs = require("qs")
+
 
 app.post("/", urlencodedParser, async function (req, res) {
   let response;
@@ -56,8 +58,25 @@ app.post("/action", urlencodedParser, async function (req, res) {
   res.end();
 });
 
-app.get("/install", function (req, res) {
-  return res.redirect(302, 'https://slack.com/oauth/authorize');
+app.get("/authorize", function (req, res) {
+  return res.redirect(302, `https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scopes=commands`);
+})
+
+app.get("/callback", async function (req, res) {
+  const {
+    code
+  } = req.query
+  const postBody = {
+    code,
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET
+  }
+  const result = await axios.post('https://slack.com/api/oauth.access', qs.stringify(postBody), {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  return res.redirect(302, 'https://s3-ap-northeast-1.amazonaws.com/slack-irasutoya/index.html')
 })
 
 const _search = async text => {
