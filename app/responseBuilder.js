@@ -10,11 +10,13 @@ const searchResponse = images => {
   });
 };
 
-const randomResponse = ({title, imageUrl}) => {
+const randomResponse = ({
+  title,
+  imageUrl
+}) => {
   return JSON.stringify({
     response_type: "ephemeral",
-    blocks: [
-      {
+    blocks: [{
         type: "image",
         title: {
           type: "plain_text",
@@ -26,8 +28,7 @@ const randomResponse = ({title, imageUrl}) => {
       },
       {
         type: "actions",
-        elements: [
-          {
+        elements: [{
             type: "button",
             text: {
               type: "plain_text",
@@ -52,8 +53,10 @@ const randomResponse = ({title, imageUrl}) => {
 };
 
 const _imagesResponse = images => {
-  const imageResponses = images.map(({ imageUrl, title }) => [
-    {
+  const imageResponses = images.map(({
+    imageUrl,
+    title
+  }) => [{
       type: "image",
       title: {
         type: "plain_text",
@@ -65,40 +68,40 @@ const _imagesResponse = images => {
     },
     {
       type: "actions",
-      elements: [
-        {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "送る",
-            emoji: true
-          },
-          value: imageUrl
-        }
-      ]
+      elements: [{
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: "送る",
+          emoji: true
+        },
+        value: imageUrl
+      }]
     }
   ]);
   return _.flatten(imageResponses);
 };
 
 const sendImageResponse = req => {
-  const { actions, user } = JSON.parse(req.body.payload);
+  const {
+    actions,
+    user
+  } = JSON.parse(req.body.payload);
   const action = actions[0];
   return JSON.stringify({
-    blocks: [
-      {
+    response_type: "in_channel",
+    delete_original: true,
+    blocks: [{
         type: "context",
-        elements: [
-          {
-            type: "mrkdwn",
-            text: `From ${user.username}`
-          }
-        ]
+        elements: [{
+          type: "mrkdwn",
+          text: `From ${user.username}`
+        }]
       },
       {
         type: "image",
         image_url: action.value,
-        alt_text: "いらすとや"
+        alt_text: "いらすとやや"
       }
     ]
   });
@@ -108,38 +111,32 @@ const sendImageResponse = req => {
 const notFound = () => {
   return JSON.stringify({
     response_type: "ephemeral",
-    blocks: [
-      {
-        type: "image",
-        title: {
-          type: "plain_text",
-          text: "404 検索結果が見つかりません。",
-          emoji: true
-        },
-        image_url:
-          "https://1.bp.blogspot.com/-lGOEBC53sNk/WvQHXNpNfiI/AAAAAAABL6I/EF8b66sqJicObf9JkISl-cuvfc5m4EUrACLcBGAs/s400/internet_404_page_not_found_j.png",
-        alt_text: "Example Image"
-      }
-    ]
+    blocks: [{
+      type: "image",
+      title: {
+        type: "plain_text",
+        text: "404 検索結果が見つかりません。",
+        emoji: true
+      },
+      image_url: "https://1.bp.blogspot.com/-lGOEBC53sNk/WvQHXNpNfiI/AAAAAAABL6I/EF8b66sqJicObf9JkISl-cuvfc5m4EUrACLcBGAs/s400/internet_404_page_not_found_j.png",
+      alt_text: "Example Image"
+    }]
   });
 };
 
 const internalServerError = () => {
   return JSON.stringify({
     response_type: "ephemeral",
-    blocks: [
-      {
-        type: "image",
-        title: {
-          type: "plain_text",
-          text: "500 インターナルサーバーエラー",
-          emoji: true
-        },
-        image_url:
-          "https://4.bp.blogspot.com/-97ehmgQAia0/VZt5RUaiYsI/AAAAAAAAu24/yrwP694zWZA/s400/computer_error_bluescreen.png",
-        alt_text: "ブルースクリーンのイラスト"
-      }
-    ]
+    blocks: [{
+      type: "image",
+      title: {
+        type: "plain_text",
+        text: "500 インターナルサーバーエラー",
+        emoji: true
+      },
+      image_url: "https://4.bp.blogspot.com/-97ehmgQAia0/VZt5RUaiYsI/AAAAAAAAu24/yrwP694zWZA/s400/computer_error_bluescreen.png",
+      alt_text: "ブルースクリーンのイラスト"
+    }]
   });
 };
 

@@ -13,14 +13,17 @@ const service = require("./service");
 const _ = require("lodash");
 const qs = require("qs")
 
-
 app.post("/", urlencodedParser, async function (req, res) {
   let response;
   const {
+    token,
     text,
     response_url
   } = req.body;
   try {
+    if (token !== process.env.VERIFICATION_TOKEN) {
+      res.send(401)
+    }
     if (text) {
       // search
       response = await _search(text);
@@ -39,6 +42,7 @@ app.post("/", urlencodedParser, async function (req, res) {
 app.post("/action", urlencodedParser, async function (req, res) {
   let response;
   const {
+    token,
     response_url,
     actions
   } = JSON.parse(req.body.payload);
@@ -46,12 +50,15 @@ app.post("/action", urlencodedParser, async function (req, res) {
     value: actionName
   } = actions[0];
   try {
+    if (token !== process.env.VERIFICATION_TOKEN) {
+      res.send(401)
+    }
     if (actionName === "RETRY_RANDOM") {
       response = await _random();
     } else {
       response = responseBuilder.sendImageResponse(req);
     }
-    await axios.post(response_url, response);
+    const res = await axios.post(response_url, response);
   } catch (err) {
     axios.post(response_url, responseBuilder.internalServerError());
   }
@@ -59,7 +66,7 @@ app.post("/action", urlencodedParser, async function (req, res) {
 });
 
 app.get("/authorize", function (req, res) {
-  return res.redirect(302, `https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scopes=commands`);
+  return res.redirect(302, `https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=commands`);
 })
 
 app.get("/callback", async function (req, res) {
@@ -76,7 +83,7 @@ app.get("/callback", async function (req, res) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
-  return res.redirect(302, 'https://s3-ap-northeast-1.amazonaws.com/slack-irasutoya/index.html')
+  return res.redirect(302, 'https://s3-ap-northeast-1.amazonaws.com/slack-irasutoya/index_success.html')
 })
 
 const _search = async text => {

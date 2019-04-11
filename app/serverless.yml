@@ -15,5 +15,6 @@ functions:
     environment:
       CLIENT_ID: ${env:IRASUTOYA_CLIENT_ID}
       CLIENT_SECRET: ${env:IRASUTOYA_CLIENT_SECRET}
+      VERIFICATION_TOKEN: ${env:IRASUTOYA_VERIFICATION_TOKEN}
 plugins:
   - serverless-offline

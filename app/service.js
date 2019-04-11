@@ -15,7 +15,7 @@ const opts = {
 const MAX_IMAGE_INDEX = 9985
 
 // Irasutoya service
-const SEARCH_SMAPLE_SIZE = 3;
+const SEARCH_SMAPLE_SIZE = 1;
 const search = async query => {
   const imagePageUrls = await _scrapeImagePageUrlsFromSearchResults(query);
 
